@@ -1,0 +1,2414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CULTI 7 — Digital Moisture Meter for NW & RCN | IXE Tronics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --clr-cream: #F7F3ED;
+            --clr-sand: #C9A96E;
+            --clr-sand-light: #D4BA88;
+            --clr-dark: #1A1A18;
+            --clr-charcoal: #2D2D2A;
+            --clr-olive: #4A5A3A;
+            --clr-olive-light: #6B7D56;
+            --clr-white: #FFFFFF;
+            --clr-warm-gray: #9C9689;
+            --clr-light-bg: #EDE8E0;
+            --font-display: 'DM Serif Display', serif;
+            --font-body: 'Outfit', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--clr-cream);
+            color: var(--clr-dark);
+            overflow-x: hidden;
+        }
+
+        /* ── NAVBAR ── */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: 1.2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.4s ease;
+            background: transparent;
+        }
+
+        .navbar.scrolled {
+            background: rgba(247, 243, 237, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 2px 40px rgba(0,0,0,0.06);
+            padding: 0.8rem 3rem;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            text-decoration: none;
+        }
+
+        .nav-logo-mark {
+            width: 36px;
+            height: 36px;
+            background: var(--clr-sand);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            color: var(--clr-white);
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .nav-brand {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            color: var(--clr-dark);
+            letter-spacing: -0.02em;
+        }
+
+        .nav-brand span { color: var(--clr-sand); }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2.2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--clr-charcoal);
+            font-size: 0.88rem;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--clr-sand);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover { color: var(--clr-sand); }
+        .nav-links a:hover::after { width: 100%; }
+
+        .nav-cta {
+            background: var(--clr-olive) !important;
+            color: var(--clr-white) !important;
+            padding: 0.65rem 1.6rem;
+            border-radius: 50px;
+            font-size: 0.85rem !important;
+            font-weight: 600 !important;
+            transition: all 0.3s !important;
+        }
+
+        .nav-cta::after { display: none !important; }
+        .nav-cta:hover {
+            background: var(--clr-olive-light) !important;
+            transform: translateY(-1px);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 4px;
+        }
+
+        .hamburger span {
+            width: 24px;
+            height: 2px;
+            background: var(--clr-dark);
+            transition: all 0.3s;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            padding: 8rem 5rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -10%;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(201,169,110,0.12) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-content { position: relative; z-index: 2; }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(201,169,110,0.15);
+            border: 1px solid rgba(201,169,110,0.3);
+            border-radius: 50px;
+            padding: 0.45rem 1.2rem;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--clr-sand);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--clr-olive);
+            border-radius: 50%;
+        }
+
+        .hero-since {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.82rem;
+            color: var(--clr-warm-gray);
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease 0.05s forwards;
+            opacity: 0;
+        }
+
+        .hero-since svg { width: 16px; height: 16px; color: var(--clr-sand); }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 5.5vw, 5rem);
+            line-height: 1.05;
+            color: var(--clr-dark);
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease 0.1s forwards;
+            opacity: 0;
+        }
+
+        .hero h1 em { font-style: italic; color: var(--clr-sand); }
+
+        .hero-desc {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            color: var(--clr-warm-gray);
+            max-width: 480px;
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 0.8s ease 0.2s forwards;
+            opacity: 0;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            animation: fadeInUp 0.8s ease 0.3s forwards;
+            opacity: 0;
+        }
+
+        .btn-primary {
+            background: var(--clr-olive);
+            color: var(--clr-white);
+            padding: 1rem 2.4rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.35s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .btn-primary:hover {
+            background: var(--clr-olive-light);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(74,90,58,0.25);
+        }
+
+        .btn-primary svg { width: 18px; height: 18px; transition: transform 0.3s; }
+        .btn-primary:hover svg { transform: translateX(3px); }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--clr-dark);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: 2px solid var(--clr-dark);
+            transition: all 0.35s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-secondary:hover {
+            background: var(--clr-dark);
+            color: var(--clr-white);
+        }
+
+        .hero-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .hero-product-wrapper {
+            position: relative;
+            animation: floatUp 1s ease 0.4s forwards;
+            opacity: 0;
+        }
+
+        .hero-product-ring {
+            width: 440px;
+            height: 440px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, rgba(201,169,110,0.1), rgba(201,169,110,0.05));
+            border: 1px solid rgba(201,169,110,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .hero-product-ring::before {
+            content: '';
+            position: absolute;
+            width: 370px;
+            height: 370px;
+            border-radius: 50%;
+            border: 1px dashed rgba(201,169,110,0.2);
+            animation: spinSlow 40s linear infinite;
+        }
+
+        /* Product image placeholder */
+        .product-img-placeholder {
+            width: 220px;
+            height: 340px;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .product-img-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 30px 60px rgba(0,0,0,0.18));
+        }
+
+        /* Placeholder when no real image */
+        .product-img-placeholder .placeholder-box {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #D4CCC0, #E8E0D4);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            border: 2px dashed rgba(201,169,110,0.3);
+        }
+
+        .placeholder-box svg { width: 48px; height: 48px; color: var(--clr-sand); opacity: 0.6; }
+        .placeholder-box span { font-size: 0.8rem; color: var(--clr-warm-gray); font-weight: 500; }
+
+        .floating-stat {
+            position: absolute;
+            background: var(--clr-white);
+            border-radius: 16px;
+            padding: 1rem 1.3rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            animation: floatBounce 3s ease-in-out infinite;
+        }
+
+        .floating-stat.stat-1 { top: 30px; right: -20px; animation-delay: 0s; }
+        .floating-stat.stat-2 { bottom: 50px; left: -30px; animation-delay: 1.5s; }
+        .floating-stat.stat-3 { bottom: 150px; right: -40px; animation-delay: 0.8s; }
+
+        .stat-icon {
+            width: 40px; height: 40px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .stat-icon.green { background: rgba(74,90,58,0.12); color: var(--clr-olive); }
+        .stat-icon.gold { background: rgba(201,169,110,0.15); color: var(--clr-sand); }
+
+        .floating-stat .stat-label { font-size: 0.72rem; color: var(--clr-warm-gray); font-weight: 500; }
+        .floating-stat .stat-value { font-size: 1rem; font-weight: 700; color: var(--clr-dark); }
+
+        /* ── TRUST BAR ── */
+        .trust-bar {
+            background: var(--clr-dark);
+            padding: 2rem 5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+        }
+
+        .trust-item svg { width: 20px; height: 20px; color: var(--clr-sand); }
+
+        .trust-item strong { color: var(--clr-sand-light); }
+
+        /* ── SECTION STYLES ── */
+        .section { padding: 6rem 5rem; }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--clr-sand);
+            margin-bottom: 1rem;
+        }
+
+        .section-label::before {
+            content: '';
+            width: 30px;
+            height: 2px;
+            background: var(--clr-sand);
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 3.5vw, 3rem);
+            line-height: 1.15;
+            color: var(--clr-dark);
+            margin-bottom: 1.2rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.05rem;
+            color: var(--clr-warm-gray);
+            line-height: 1.7;
+            max-width: 550px;
+        }
+
+        /* ── ABOUT ── */
+        .about {
+            background: var(--clr-white);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .about-visual { position: relative; }
+
+        .about-card {
+            background: var(--clr-light-bg);
+            border-radius: 24px;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 420px;
+        }
+
+        .about-card::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 150px; height: 150px;
+            background: radial-gradient(circle, rgba(201,169,110,0.2), transparent);
+            border-radius: 0 24px 0 0;
+        }
+
+        .about-product-img {
+            max-width: 240px;
+            max-height: 360px;
+            object-fit: contain;
+            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.12));
+            position: relative;
+            z-index: 1;
+        }
+
+        .about-product-placeholder {
+            width: 200px;
+            height: 320px;
+            border: 2px dashed rgba(201,169,110,0.35);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            background: rgba(255,255,255,0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        .about-product-placeholder svg { width: 40px; height: 40px; color: var(--clr-sand); opacity: 0.5; }
+        .about-product-placeholder span { font-size: 0.78rem; color: var(--clr-warm-gray); }
+
+        .about-text p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--clr-charcoal);
+            margin-bottom: 1.5rem;
+        }
+
+        .about-highlights {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .about-highlight {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            padding: 1rem;
+            background: var(--clr-light-bg);
+            border-radius: 14px;
+            transition: transform 0.3s;
+        }
+
+        .about-highlight:hover { transform: translateY(-3px); }
+
+        .about-highlight-icon {
+            width: 38px; height: 38px;
+            border-radius: 10px;
+            background: rgba(74,90,58,0.1);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            color: var(--clr-olive);
+        }
+
+        .about-highlight h4 { font-size: 0.85rem; font-weight: 700; margin-bottom: 0.15rem; }
+        .about-highlight p { font-size: 0.78rem; color: var(--clr-warm-gray); line-height: 1.4; margin-bottom: 0 !important; }
+
+        /* ── USE CASES ── */
+        .use-cases {
+            background: var(--clr-light-bg);
+        }
+
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .use-case-card {
+            background: var(--clr-white);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s;
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .use-case-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+        }
+
+        .use-case-img {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .use-case-img-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--clr-light-bg), #D8D0C4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .use-case-img-placeholder svg { width: 36px; height: 36px; color: var(--clr-sand); opacity: 0.4; }
+        .use-case-img-placeholder span { font-size: 0.72rem; color: var(--clr-warm-gray); }
+
+        .use-case-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .use-case-body { padding: 1.8rem; }
+
+        .use-case-icon {
+            width: 44px; height: 44px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            background: rgba(74,90,58,0.08);
+        }
+
+        .use-case-body h3 {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .use-case-body p {
+            font-size: 0.88rem;
+            line-height: 1.65;
+            color: var(--clr-warm-gray);
+        }
+
+        /* ── FEATURES ── */
+        .features {
+            background: var(--clr-cream);
+            text-align: center;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-top: 3.5rem;
+        }
+
+        .feature-card {
+            background: var(--clr-white);
+            border-radius: 20px;
+            padding: 2.5rem 1.8rem;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.04);
+            transition: all 0.4s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--clr-sand), var(--clr-olive));
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .feature-card:hover::before { opacity: 1; }
+
+        .feature-icon {
+            width: 52px; height: 52px;
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 1.3rem;
+            font-size: 1.4rem;
+        }
+
+        .feature-icon.sand { background: rgba(201,169,110,0.12); }
+        .feature-icon.olive { background: rgba(74,90,58,0.1); }
+        .feature-icon.dark { background: rgba(26,26,24,0.08); }
+
+        .feature-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .feature-card p { font-size: 0.88rem; line-height: 1.6; color: var(--clr-warm-gray); }
+
+        /* ── MODELS ── */
+        .models {
+            background: var(--clr-dark);
+            color: var(--clr-white);
+        }
+
+        .models .section-label { color: var(--clr-sand-light); }
+        .models .section-title { color: var(--clr-white); }
+        .models .section-subtitle { color: rgba(255,255,255,0.5); }
+
+        .models-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3.5rem;
+        }
+
+        .model-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            position: relative;
+            transition: all 0.4s;
+        }
+
+        .model-card:hover {
+            background: rgba(255,255,255,0.07);
+            border-color: var(--clr-sand);
+            transform: translateY(-4px);
+        }
+
+        .model-card.featured {
+            border-color: var(--clr-sand);
+            background: rgba(201,169,110,0.08);
+        }
+
+        .model-badge {
+            position: absolute;
+            top: 1.2rem; right: 1.2rem;
+            background: var(--clr-sand);
+            color: var(--clr-dark);
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .model-name { font-family: var(--font-display); font-size: 1.6rem; margin-bottom: 0.3rem; }
+        .model-full-name { font-size: 0.85rem; color: rgba(255,255,255,0.4); margin-bottom: 1.5rem; }
+
+        .model-specs { list-style: none; margin-bottom: 2rem; }
+
+        .model-specs li {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .model-specs li svg { width: 16px; height: 16px; color: var(--clr-sand); flex-shrink: 0; }
+
+        .model-cta {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 0.9rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            border: 2px solid rgba(255,255,255,0.15);
+            color: var(--clr-white);
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .model-cta:hover { border-color: var(--clr-sand); background: rgba(201,169,110,0.1); }
+
+        .model-card.featured .model-cta {
+            background: var(--clr-sand);
+            color: var(--clr-dark);
+            border-color: var(--clr-sand);
+        }
+
+        .model-card.featured .model-cta:hover { background: var(--clr-sand-light); }
+
+        /* ── SPECS ── */
+        .specs { background: var(--clr-white); }
+
+        .specs-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+            margin-top: 3rem;
+        }
+
+        .specs-table { width: 100%; border-collapse: collapse; }
+        .specs-table tr { border-bottom: 1px solid rgba(0,0,0,0.06); }
+        .specs-table td { padding: 1rem 0; font-size: 0.95rem; }
+        .specs-table td:first-child { color: var(--clr-warm-gray); font-weight: 500; width: 45%; }
+        .specs-table td:last-child { font-weight: 600; color: var(--clr-dark); }
+
+        .specs-box {
+            background: var(--clr-light-bg);
+            border-radius: 20px;
+            padding: 2.5rem;
+        }
+
+        .specs-box h3 {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .package-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .package-item:last-child { border: none; }
+
+        .package-check {
+            width: 28px; height: 28px;
+            border-radius: 8px;
+            background: rgba(74,90,58,0.1);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--clr-olive);
+            flex-shrink: 0;
+        }
+
+        .package-item span { font-size: 0.95rem; font-weight: 500; }
+
+        /* ── MANUAL DOWNLOAD ── */
+        .manual-download {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .manual-download h4 {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.7rem;
+            background: var(--clr-olive);
+            color: var(--clr-white);
+            padding: 0.9rem 1.8rem;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .download-btn:hover {
+            background: var(--clr-olive-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(74,90,58,0.2);
+        }
+
+        .download-btn svg { width: 20px; height: 20px; }
+
+        .download-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 0.8rem;
+            font-size: 0.78rem;
+            color: var(--clr-warm-gray);
+        }
+
+        .download-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        /* ── HOW IT WORKS ── */
+        .how-it-works { background: var(--clr-cream); }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-top: 3.5rem;
+        }
+
+        .step-card {
+            position: relative;
+            background: var(--clr-white);
+            border-radius: 20px;
+            padding: 2.2rem 1.8rem;
+            border: 1px solid rgba(0,0,0,0.04);
+            transition: all 0.4s;
+        }
+
+        .step-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.06);
+        }
+
+        .step-number {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            color: rgba(201,169,110,0.2);
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+
+        .step-card h3 { font-family: var(--font-display); font-size: 1.1rem; margin-bottom: 0.5rem; }
+        .step-card p { font-size: 0.85rem; line-height: 1.6; color: var(--clr-warm-gray); }
+
+        /* ── VIDEO SECTION ── */
+        .video-section {
+            background: var(--clr-charcoal);
+            color: var(--clr-white);
+            text-align: center;
+        }
+
+        .video-section .section-label { color: var(--clr-sand-light); }
+        .video-section .section-title { color: var(--clr-white); }
+        .video-section .section-subtitle { color: rgba(255,255,255,0.5); margin: 0 auto; }
+
+        .video-wrapper {
+            max-width: 860px;
+            margin: 3rem auto 0;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            aspect-ratio: 16 / 9;
+        }
+
+        /* Replace with actual YouTube embed or video */
+        .video-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.2rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            position: relative;
+        }
+
+        .video-placeholder:hover { background: rgba(255,255,255,0.03); }
+
+        .video-play-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--clr-sand);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            box-shadow: 0 10px 40px rgba(201,169,110,0.3);
+        }
+
+        .video-placeholder:hover .video-play-btn {
+            transform: scale(1.1);
+            box-shadow: 0 15px 50px rgba(201,169,110,0.4);
+        }
+
+        .video-play-btn svg { width: 32px; height: 32px; color: var(--clr-dark); margin-left: 3px; }
+
+        .video-placeholder span {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.5);
+            font-weight: 500;
+        }
+
+        .video-placeholder .video-caption {
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.3);
+        }
+
+        /* When video is embedded */
+        .video-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ── CUSTOMERS ── */
+        .customers {
+            background: var(--clr-cream);
+            text-align: center;
+        }
+
+        .customers-header-sub {
+            font-size: 1rem;
+            color: var(--clr-warm-gray);
+            margin-top: -0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .customer-trust-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(74,90,58,0.08);
+            border: 1px solid rgba(74,90,58,0.15);
+            border-radius: 50px;
+            padding: 0.5rem 1.4rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--clr-olive);
+            margin-bottom: 2rem;
+        }
+
+        .customer-trust-badge svg { width: 16px; height: 16px; }
+
+        .customers-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+
+        .customer-card {
+            background: var(--clr-white);
+            border-radius: 18px;
+            padding: 2rem 1.5rem;
+            border: 1px solid rgba(0,0,0,0.04);
+            transition: all 0.35s;
+            text-align: center;
+        }
+
+        .customer-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.06);
+            border-color: rgba(201,169,110,0.2);
+        }
+
+        .customer-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+            color: var(--clr-white);
+            font-weight: 700;
+        }
+
+        .customer-logo.c1 { background: linear-gradient(135deg, #5B7A4A, #7A9B64); }
+        .customer-logo.c2 { background: linear-gradient(135deg, #8B6F47, #B8955F); }
+        .customer-logo.c3 { background: linear-gradient(135deg, #4A6B7A, #6B95A8); }
+        .customer-logo.c4 { background: linear-gradient(135deg, #7A5B4A, #A87B64); }
+        .customer-logo.c5 { background: linear-gradient(135deg, #5A5B7A, #7B7CA8); }
+        .customer-logo.c6 { background: linear-gradient(135deg, #4A7A5B, #64A87B); }
+        .customer-logo.c7 { background: linear-gradient(135deg, #7A4A5B, #A8647B); }
+        .customer-logo.c8 { background: linear-gradient(135deg, #6B6B4A, #9B9B6B); }
+
+        .customer-card h4 {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .customer-card .customer-type {
+            font-size: 0.78rem;
+            color: var(--clr-warm-gray);
+            margin-bottom: 0.6rem;
+        }
+
+        .customer-card .customer-location {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.75rem;
+            color: var(--clr-sand);
+            font-weight: 600;
+        }
+
+        .customer-card .customer-location svg { width: 13px; height: 13px; }
+
+        /* ── SHIPPING ── */
+        .shipping {
+            background: linear-gradient(135deg, var(--clr-olive), #3A4A2E);
+            color: var(--clr-white);
+            text-align: center;
+            padding: 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shipping::before {
+            content: '';
+            position: absolute;
+            top: -50%; right: -20%;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(201,169,110,0.15), transparent);
+            border-radius: 50%;
+        }
+
+        .shipping .section-label { color: var(--clr-sand-light); }
+        .shipping .section-title { color: var(--clr-white); max-width: 600px; margin: 0 auto 1rem; }
+        .shipping .section-subtitle { color: rgba(255,255,255,0.7); max-width: 500px; margin: 0 auto 2.5rem; }
+
+        .shipping-features {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .ship-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-size: 1rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .ship-feature svg { width: 22px; height: 22px; color: var(--clr-sand-light); }
+
+        /* ── CONTACT ── */
+        .contact {
+            background: var(--clr-white);
+        }
+
+        .contact-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+            align-items: start;
+        }
+
+        /* ── INQUIRY FORM ── */
+        .inquiry-card {
+            background: var(--clr-cream);
+            border-radius: 24px;
+            padding: 2.8rem;
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .inquiry-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .inquiry-card > p {
+            color: var(--clr-warm-gray);
+            font-size: 0.9rem;
+            margin-bottom: 1.8rem;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--clr-charcoal);
+            margin-bottom: 0.4rem;
+            letter-spacing: 0.02em;
+        }
+
+        .form-group label .required {
+            color: #C45B4A;
+            margin-left: 2px;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 0.85rem 1.1rem;
+            border-radius: 12px;
+            border: 1.5px solid rgba(0,0,0,0.1);
+            background: var(--clr-white);
+            font-family: var(--font-body);
+            font-size: 0.92rem;
+            color: var(--clr-dark);
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--clr-sand);
+            box-shadow: 0 0 0 3px rgba(201,169,110,0.15);
+        }
+
+        .form-input::placeholder, .form-textarea::placeholder {
+            color: #B8B2A8;
+        }
+
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239C9689' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
+            cursor: pointer;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 14px;
+            border: none;
+            background: var(--clr-olive);
+            color: var(--clr-white);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.35s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            margin-top: 0.5rem;
+        }
+
+        .form-submit:hover {
+            background: var(--clr-olive-light);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(74,90,58,0.25);
+        }
+
+        .form-submit svg { width: 18px; height: 18px; }
+
+        .form-success {
+            display: none;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+
+        .form-success.show { display: block; }
+
+        .form-success-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: rgba(74,90,58,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.2rem;
+            color: var(--clr-olive);
+        }
+
+        .form-success h4 {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-success p {
+            font-size: 0.9rem;
+            color: var(--clr-warm-gray);
+            line-height: 1.6;
+        }
+
+        /* ── CONTACT INFO SIDE ── */
+        .contact-info-card {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .contact-info-box {
+            background: var(--clr-cream);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .contact-info-box h4 {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            text-decoration: none;
+            color: var(--clr-dark);
+            padding: 1rem 1.2rem;
+            border-radius: 14px;
+            background: var(--clr-white);
+            transition: all 0.3s;
+            border: 1px solid rgba(0,0,0,0.05);
+            margin-bottom: 0.8rem;
+        }
+
+        .contact-method:last-child { margin-bottom: 0; }
+
+        .contact-method:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+        }
+
+        .contact-method-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .contact-method-icon svg { width: 22px; height: 22px; }
+        .contact-method-icon.email { background: rgba(201,169,110,0.12); color: var(--clr-sand); }
+        .contact-method-icon.phone { background: rgba(74,90,58,0.1); color: var(--clr-olive); }
+        .contact-method-icon.whatsapp { background: rgba(37,211,102,0.1); color: #25D366; }
+
+        .contact-method-text { text-align: left; }
+
+        .contact-method-text .cm-label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--clr-warm-gray);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 0.15rem;
+        }
+
+        .contact-method-text .cm-value {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--clr-dark);
+        }
+
+        /* Quick info box */
+        .quick-info {
+            background: var(--clr-dark);
+            border-radius: 20px;
+            padding: 2rem;
+            color: var(--clr-white);
+        }
+
+        .quick-info h4 {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--clr-white);
+        }
+
+        .quick-info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            font-size: 0.88rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .quick-info-item:last-child { border: none; }
+
+        .quick-info-item svg {
+            width: 16px;
+            height: 16px;
+            color: var(--clr-sand);
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+            .contact-layout { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+        }
+
+        /* ── FOOTER ── */
+        .footer {
+            background: var(--clr-dark);
+            color: rgba(255,255,255,0.5);
+            padding: 3rem 5rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .footer-brand { font-family: var(--font-display); font-size: 1.2rem; color: var(--clr-white); }
+        .footer-brand span { color: var(--clr-sand); }
+
+        .footer-links { display: flex; gap: 2rem; list-style: none; }
+        .footer-links a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.85rem; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--clr-sand); }
+
+        .footer-copy {
+            font-size: 0.8rem;
+            width: 100%;
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes floatUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes floatBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── MOBILE NAV ── */
+        .mobile-nav-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 998;
+        }
+
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 280px;
+            height: 100%;
+            background: var(--clr-cream);
+            z-index: 999;
+            padding: 5rem 2rem 2rem;
+            transition: right 0.3s ease;
+            box-shadow: -5px 0 30px rgba(0,0,0,0.1);
+        }
+
+        .mobile-nav.open { right: 0; }
+        .mobile-nav-overlay.open { display: block; }
+
+        .mobile-nav a {
+            display: block;
+            padding: 0.9rem 0;
+            text-decoration: none;
+            color: var(--clr-dark);
+            font-weight: 500;
+            font-size: 1rem;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .mobile-nav .nav-cta {
+            display: inline-block;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1024px) {
+            .section { padding: 4rem 3rem; }
+            .navbar { padding: 1rem 2rem; }
+            .hero { padding: 7rem 3rem 3rem; gap: 2rem; }
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .models-grid { grid-template-columns: repeat(3, 1fr); }
+            .steps-container { grid-template-columns: repeat(2, 1fr); }
+            .customers-grid { grid-template-columns: repeat(2, 1fr); }
+            .use-cases-grid { grid-template-columns: repeat(3, 1fr); }
+            .about { gap: 3rem; }
+        }
+
+        @media (max-width: 768px) {
+            .section { padding: 3.5rem 1.5rem; }
+            .navbar { padding: 1rem 1.5rem; }
+            .navbar.scrolled { padding: 0.7rem 1.5rem; }
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .mobile-nav { display: block; }
+
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 6.5rem 1.5rem 3rem;
+                text-align: center;
+                min-height: auto;
+            }
+
+            .hero-since { justify-content: center; }
+            .hero-desc { margin: 0 auto 2rem; }
+            .hero-actions { justify-content: center; flex-wrap: wrap; }
+
+            .hero-product-ring { width: 300px; height: 300px; }
+            .hero-product-ring::before { width: 250px; height: 250px; }
+            .product-img-placeholder { width: 160px; height: 260px; }
+            .floating-stat { display: none; }
+
+            .about { grid-template-columns: 1fr; gap: 2rem; }
+            .features-grid { grid-template-columns: 1fr; }
+            .models-grid { grid-template-columns: 1fr; }
+            .steps-container { grid-template-columns: 1fr; }
+            .specs-layout { grid-template-columns: 1fr; }
+            .customers-grid { grid-template-columns: 1fr 1fr; }
+            .use-cases-grid { grid-template-columns: 1fr; }
+            .trust-bar { padding: 1.5rem; gap: 1.5rem; }
+            .shipping { padding: 3rem 1.5rem; }
+            .shipping-features { gap: 1.5rem; }
+            .footer { padding: 2rem 1.5rem; }
+            .footer-content { justify-content: center; text-align: center; }
+            .footer-links { justify-content: center; }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 2.4rem; }
+            .contact-card { padding: 2rem 1.5rem; }
+            .about-highlights { grid-template-columns: 1fr; }
+            .hero-actions { flex-direction: column; }
+            .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+            .customers-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="nav-logo">
+            <div class="nav-logo-mark">C7</div>
+            <div class="nav-brand">CULTI <span>7</span></div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#use-cases">Usage</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#models">Models</a></li>
+            <li><a href="#specs">Specs</a></li>
+            <li><a href="#customers">Customers</a></li>
+            <li><a href="#contact" class="nav-cta">Get in Touch</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" aria-label="Open menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- MOBILE NAV -->
+    <div class="mobile-nav-overlay" id="mobileOverlay"></div>
+    <div class="mobile-nav" id="mobileNav">
+        <a href="#about" onclick="closeMobileNav()">About</a>
+        <a href="#use-cases" onclick="closeMobileNav()">Usage</a>
+        <a href="#features" onclick="closeMobileNav()">Features</a>
+        <a href="#models" onclick="closeMobileNav()">Models</a>
+        <a href="#specs" onclick="closeMobileNav()">Specifications</a>
+        <a href="#customers" onclick="closeMobileNav()">Customers</a>
+        <a href="#contact" onclick="closeMobileNav()" class="nav-cta">Get in Touch</a>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- HERO -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div class="hero-badge">Designed & Made in India</div>
+            <div class="hero-since">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Trusted by the industry since 2021
+            </div>
+            <h1>Precision <em>Moisture</em> Measurement for Cashew</h1>
+            <p class="hero-desc">The CULTI 7 by IXE Tronics delivers instant, accurate moisture readings for Raw Cashew Nuts and Natural Wholes — empowering farmers, traders, and processors across India.</p>
+            <div class="hero-actions">
+                <a href="#contact" class="btn-primary">
+                    Order Now
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+                </a>
+                <a href="#video" class="btn-secondary">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    Watch Demo
+                </a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="hero-product-wrapper">
+                <div class="hero-product-ring">
+                    <!-- ═══ PRODUCT IMAGE PLACEHOLDER ═══ -->
+                     
+<div class="product-image">
+    <img src="assets/Moisture_Meter_image.png"
+         alt="CULTI 7 Moisture Meter"
+         style="width:300px; display:block;">
+</div>           
+
+
+                    <div class="floating-stat stat-1">
+                        <div class="stat-icon green">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        </div>
+                        <div>
+                            <div class="stat-label">Accuracy</div>
+                            <div class="stat-value">±0.2%</div>
+                        </div>
+                    </div>
+                    <div class="floating-stat stat-2">
+                        <div class="stat-icon gold">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                        </div>
+                        <div>
+                            <div class="stat-label">Readings</div>
+                            <div class="stat-value">Instant</div>
+                        </div>
+                    </div>
+                    <div class="floating-stat stat-3">
+                        <div class="stat-icon green">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                        <div>
+                            <div class="stat-label">Trusted Since</div>
+                            <div class="stat-value">2021</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRUST BAR -->
+    <div class="trust-bar">
+        <div class="trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Trusted Since <strong>&nbsp;2021</strong>
+        </div>
+        <div class="trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Non-Destructive Testing
+        </div>
+        <div class="trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            Ships Anywhere in India
+        </div>
+        <div class="trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            Portable & Rechargeable
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- ABOUT -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <section class="section about" id="about">
+        <div class="about-visual">
+            <div class="about-card reveal">
+                <!-- ═══ PRODUCT IMAGE PLACEHOLDER ═══ -->
+                <!-- Replace with: <img src="your-product-image.png" alt="CULTI 7" class="about-product-img"> -->
+                <div class="about-product-placeholder">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                    <span>Product Image</span>
+                    <span style="font-size:0.68rem; opacity:0.6;">culti7-angle.png</span>
+                </div>
+            </div>
+        </div>
+        <div class="about-text reveal">
+            <div class="section-label">About the Product</div>
+            <h2 class="section-title">Built for the Indian Cashew Industry</h2>
+            <p>The IXE Tronics CULTI 7 Digital Moisture Meter is a handheld device that provides a direct readout of moisture content levels of produce. It is used to guide farmers, traders, and processors in determining whether the produce is safe for processing or storage.</p>
+            <p>Designed and manufactured in Mangalore, India — the CULTI 7 has been a trusted tool in the cashew industry since 2021, combining rugged build quality with precise measurement technology.</p>
+            <div class="about-highlights">
+                <div class="about-highlight">
+                    <div class="about-highlight-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
+                    <div><h4>Instant Results</h4><p>Get readings in seconds</p></div>
+                </div>
+                <div class="about-highlight">
+                    <div class="about-highlight-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                    <div><h4>Non-Destructive</h4><p>Sample stays intact</p></div>
+                </div>
+                <div class="about-highlight">
+                    <div class="about-highlight-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                    </div>
+                    <div><h4>Portable</h4><p>Weighs only 550g</p></div>
+                </div>
+                <div class="about-highlight">
+                    <div class="about-highlight-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                    </div>
+                    <div><h4>Rechargeable</h4><p>Li-ion battery included</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- USE CASES -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <section class="section use-cases" id="use-cases">
+        <div class="reveal" style="text-align:center;">
+            <div class="section-label">Where It's Used</div>
+            <h2 class="section-title">Real-World Applications</h2>
+            <p class="section-subtitle" style="margin: 0 auto;">From farm gates to factory floors — the CULTI 7 fits seamlessly into your cashew workflow.</p>
+        </div>
+        <div class="use-cases-grid">
+            <div class="use-case-card reveal">
+                <div class="use-case-img">
+                    <!-- ═══ USAGE IMAGE PLACEHOLDER ═══ -->
+                    <!-- Replace with: <img src="farm-gate.jpg" alt="Farm gate testing"> -->
+                    <div class="use-case-img-placeholder">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                        <span>farm-gate-testing.jpg</span>
+                    </div>
+                </div>
+                <div class="use-case-body">
+                    <div class="use-case-icon">🌾</div>
+                    <h3>Farm-Gate Procurement</h3>
+                    <p>Test moisture levels on the spot during RCN procurement. Ensure fair pricing and avoid disputes with instant, transparent readings that both buyer and seller can trust.</p>
+                </div>
+            </div>
+            <div class="use-case-card reveal">
+                <div class="use-case-img">
+                    <!-- ═══ USAGE IMAGE PLACEHOLDER ═══ -->
+                    <div class="use-case-img-placeholder">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                        <span>warehouse-check.jpg</span>
+                    </div>
+                </div>
+                <div class="use-case-body">
+                    <div class="use-case-icon">🏭</div>
+                    <h3>Warehouse Quality Check</h3>
+                    <p>Monitor stored cashew moisture to prevent spoilage, mold, and quality degradation. Regularly test incoming and outgoing batches to maintain quality standards.</p>
+                </div>
+            </div>
+            <div class="use-case-card reveal">
+                <div class="use-case-img">
+                    <!-- ═══ USAGE IMAGE PLACEHOLDER ═══ -->
+                    <div class="use-case-img-placeholder">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                        <span>processing-unit.jpg</span>
+                    </div>
+                </div>
+                <div class="use-case-body">
+                    <div class="use-case-icon">⚙️</div>
+                    <h3>Processing & Export</h3>
+                    <p>Verify that Natural Wholes meet the required moisture levels before processing, grading, and export. Ensure compliance with buyer specifications and quality benchmarks.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- FEATURES -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <section class="section features" id="features">
+        <div class="reveal">
+            <div class="section-label">Why CULTI 7</div>
+            <h2 class="section-title">Features That Set Us Apart</h2>
+            <p class="section-subtitle" style="margin: 0 auto;">Engineered for reliability in the field — from warehouses to processing plants.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card reveal">
+                <div class="feature-icon sand">⚡</div>
+                <h3>Instant & Accurate</h3>
+                <p>Get precise moisture readings in seconds with ±0.2% accuracy, ensuring confident decision-making every time.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon olive">🔋</div>
+                <h3>Rechargeable Battery</h3>
+                <p>Powered by a 3.7V Li-ion battery with USB charging. No need to hunt for replacement batteries in the field.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon dark">🛡️</div>
+                <h3>Rugged & Durable</h3>
+                <p>Built with stainless steel and reinforced plastic to withstand the demands of daily use in tough environments.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon sand">📊</div>
+                <h3>OLED Display</h3>
+                <p>Clear, easy-to-read OLED display shows moisture readings with 0.1% resolution — even in bright sunlight.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon olive">🌱</div>
+                <h3>Non-Destructive Testing</h3>
+                <p>Measure moisture without damaging your produce. The sample remains intact and usable after every test.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon dark">⚙️</div>
+                <h3>Auto Calibration</h3>
+                <p>The device self-calibrates on startup, displaying 'calib' and ensuring accurate readings without manual intervention.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon sand">📦</div>
+                <h3>Compact & Portable</h3>
+                <p>At just 550g and 240mm tall, carry it anywhere — from farms to markets to processing units with ease.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon olive">🇮🇳</div>
+                <h3>Made in India</h3>
+                <p>Designed and manufactured in Mangalore with local support, service, and understanding of Indian agricultural needs.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- MODELS -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <section class="section models" id="models">
+        <div class="reveal" style="text-align:center;">
+            <div class="section-label">Choose Your Model</div>
+            <h2 class="section-title">Three Models, One Standard of Excellence</h2>
+            <p class="section-subtitle" style="margin: 0 auto;">Select the variant that matches your produce type and workflow.</p>
+        </div>
+        <div class="models-grid">
+            <div class="model-card reveal">
+                <div class="model-name">CULTI 7 RCN</div>
+                <div class="model-full-name">Raw Cashew Nut</div>
+                <ul class="model-specs">
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Optimized for Raw Cashew Nut</li>
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>700g sample quantity</li>
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>±0.2% accuracy</li>
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>0%–20% measurement range</li>
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>OLED display with 0.1% resolution</li>
+                </ul>
+                <a href="#contact" class="model-cta">Enquire Now</a>
+            </div>
+            <div class="model-card featured reveal">
+                <div class="model-badge">Most Popular</div>
+                <div class="model-name">CULTI 7 NW+RCN</div>
+                <div class="model-full-name">Natural Wholes + Raw Cashew Nut</div>
+                <ul class="model-specs">
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Dual-mode: NW &amp; RCN</li>
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>600g (NW) / 700g (RCN) sample</li>
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>±0.2% accuracy</li>
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Best value for versatile operations</li>
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>One device, two produce types</li>
+                </ul>
+                <a href="#contact" class="model-cta">Enquire Now</a>
+            </div>
+            <div class="model-card reveal">
+                <div class="model-name">CULTI 7 NW</div>
+                <div class="model-full-name">Natural Wholes</div>
+                <ul class="model-specs">
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Optimized for Natural Wholes</li>
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>600g sample quantity</li>
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>±0.2% accuracy</li>
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>0%–20% measurement range</li>
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>OLED display with 0.1% resolution</li>
+                </ul>
+                <a href="#contact" class="model-cta">Enquire Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- SPECS + MANUAL DOWNLOAD -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <section class="section specs" id="specs">
+        <div class="reveal">
+            <div class="section-label">Technical Details</div>
+            <h2 class="section-title">Specifications</h2>
+        </div>
+        <div class="specs-layout">
+            <table class="specs-table reveal">
+                <tr><td>Measurement Range</td><td>0% – 20%</td></tr>
+                <tr><td>Resolution</td><td>0.1%</td></tr>
+                <tr><td>Power Supply</td><td>3.7V – 4.2V Li-ion Battery</td></tr>
+                <tr><td>Working Temperature</td><td>20°C – 40°C</td></tr>
+                <tr><td>Volume</td><td>1000 cc</td></tr>
+                <tr><td>Material</td><td>Stainless Steel, Plastic</td></tr>
+                <tr><td>Dimensions</td><td>100mm × 240mm (D × H)</td></tr>
+                <tr><td>Weight</td><td>550g (without battery)</td></tr>
+                <tr><td>Display</td><td>OLED Display</td></tr>
+                <tr><td>Power Adaptor</td><td>5V, 1A</td></tr>
+            </table>
+            <div>
+                <div class="specs-box reveal">
+                    <h3>What's in the Box</h3>
+                    <div class="package-item">
+                        <div class="package-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+                        <span>CULTI 7 Digital Moisture Meter</span>
+                    </div>
+                    <div class="package-item">
+                        <div class="package-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+                        <span>5V Power Adapter</span>
+                    </div>
+                    <div class="package-item">
+                        <div class="package-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+                        <span>USB to DC Jack Cable</span>
+                    </div>
+                    <div class="package-item">
+                        <div class="package-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+                        <span>3.7V Battery (Pre-installed)</span>
+                    </div>
+                </div>
+
+                <!-- ═══ PRODUCT MANUAL DOWNLOAD ═══ -->
+                <div class="manual-download reveal">
+                    <h4>📄 Product Manual</h4>
+                    <!-- ═══ UPDATE THE href BELOW WITH YOUR HOSTED PDF URL ═══ -->
+                    <a href="Digital_Moisture_Meter_-_Product_Guide.pdf" class="download-btn" download>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Download Product Guide (PDF)
+                    </a>
+                    <div class="download-meta">
+                        <span>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                            PDF Format
+                        </span>
+                        <span>•</span>
+                        <span>4 Pages</span>
+                        <span>•</span>
+                        <span>Includes SOP, Specs & Care Instructions</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- HOW IT WORKS -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <section class="section how-it-works" id="how-it-works">
+        <div class="reveal" style="text-align:center;">
+            <div class="section-label">Standard Operating Procedure</div>
+            <h2 class="section-title">How to Use CULTI 7</h2>
+            <p class="section-subtitle" style="margin: 0 auto;">Simple steps to get accurate moisture readings every time.</p>
+        </div>
+        <div class="steps-container">
+            <div class="step-card reveal">
+                <div class="step-number">01</div>
+                <h3>Clean & Power On</h3>
+                <p>Ensure the inner tube is clean and free from residue. Switch on the meter and check battery level.</p>
+            </div>
+            <div class="step-card reveal">
+                <div class="step-number">02</div>
+                <h3>Wait for Calibration</h3>
+                <p>The device will self-calibrate, showing 'calib' on the display. Do not place any sample inside during this step.</p>
+            </div>
+            <div class="step-card reveal">
+                <div class="step-number">03</div>
+                <h3>Fill the Sample</h3>
+                <p>When prompted with 'Fill Sample', weigh the recommended quantity (700g RCN / 600g NW) and fill to the brim. Shake gently.</p>
+            </div>
+            <div class="step-card reveal">
+                <div class="step-number">04</div>
+                <h3>Read & Repeat</h3>
+                <p>Check the moisture reading on the OLED display. For best accuracy, repeat the procedure multiple times.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- VIDEO SECTION -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <section class="section video-section" id="video">
+        <div class="reveal">
+            <div class="section-label">See It in Action</div>
+            <h2 class="section-title" style="color:var(--clr-white)">Watch How CULTI 7 Works</h2>
+            <p class="section-subtitle">A quick walkthrough of the device — from power-on to moisture reading.</p>
+        </div>
+        <div class="video-wrapper reveal">
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- VIDEO EMBED INSTRUCTIONS                       -->
+            <!-- Replace the placeholder below with your YouTube -->
+            <!-- or Vimeo embed. Example:                        -->
+            <!--                                                 -->
+            <!-- <iframe                                         -->
+            <!--   src="https://www.youtube.com/embed/YOUR_VIDEO_ID" -->
+            <!--   title="CULTI 7 Demo"                         -->
+            <!--   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" -->
+            <!--   allowfullscreen>                              -->
+            <!-- </iframe>                                       -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="video-placeholder" id="videoPlaceholder" onclick="loadVideo(this)">
+                <div class="video-play-btn">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                </div>
+                <span>Click to Play Demo Video</span>
+                <span class="video-caption">Replace with your YouTube or Vimeo embed URL in the HTML</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- CUSTOMERS -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <section class="section customers" id="customers">
+        <div class="reveal">
+            <div class="section-label">Our Customers</div>
+            <h2 class="section-title">Trusted Across the Cashew Industry</h2>
+            <div class="customer-trust-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Serving the industry since 2021
+            </div>
+            <p class="section-subtitle" style="margin: 0 auto;">From independent traders to large-scale processors — the CULTI 7 is trusted across the value chain.</p>
+        </div>
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- CUSTOMER LIST                                   -->
+        <!-- Update the names, types, and locations below    -->
+        <!-- with your actual customer details.              -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <div class="customers-grid">
+            <div class="customer-card reveal">
+                <div class="customer-logo c1">SK</div>
+                <h4>Sri Krishna Cashews</h4>
+                <div class="customer-type">Processing Unit</div>
+                <div class="customer-location">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Mangalore, Karnataka
+                </div>
+            </div>
+            <div class="customer-card reveal">
+                <div class="customer-logo c2">VE</div>
+                <h4>Vinayak Exports</h4>
+                <div class="customer-type">Exporter & Trader</div>
+                <div class="customer-location">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Kollam, Kerala
+                </div>
+            </div>
+            <div class="customer-card reveal">
+                <div class="customer-logo c3">PC</div>
+                <h4>Prabhu Cashew Industries</h4>
+                <div class="customer-type">Processing & Trading</div>
+                <div class="customer-location">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Udupi, Karnataka
+                </div>
+            </div>
+            <div class="customer-card reveal">
+                <div class="customer-logo c4">AG</div>
+                <h4>Anand Group</h4>
+                <div class="customer-type">Bulk Procurement</div>
+                <div class="customer-location">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Goa
+                </div>
+            </div>
+            <div class="customer-card reveal">
+                <div class="customer-logo c5">NF</div>
+                <h4>Narmada Foods</h4>
+                <div class="customer-type">Processing Unit</div>
+                <div class="customer-location">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Sindhudurg, Maharashtra
+                </div>
+            </div>
+            <div class="customer-card reveal">
+                <div class="customer-logo c6">KT</div>
+                <h4>Konkan Traders</h4>
+                <div class="customer-type">RCN Trading</div>
+                <div class="customer-location">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Ratnagiri, Maharashtra
+                </div>
+            </div>
+            <div class="customer-card reveal">
+                <div class="customer-logo c7">MK</div>
+                <h4>Malabar Kernels</h4>
+                <div class="customer-type">Exporter</div>
+                <div class="customer-location">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Kochi, Kerala
+                </div>
+            </div>
+            <div class="customer-card reveal">
+                <div class="customer-logo c8">JC</div>
+                <h4>Jaya Cashew Corp</h4>
+                <div class="customer-type">Processing & Export</div>
+                <div class="customer-location">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Kumta, Karnataka
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- SHIPPING -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <section class="shipping" id="shipping">
+        <div class="reveal">
+            <div class="section-label">Delivery</div>
+            <h2 class="section-title">We Ship Anywhere in India</h2>
+            <p class="section-subtitle" style="margin: 0 auto;">From Kerala to Karnataka, Gujarat to Goa — get the CULTI 7 delivered to your doorstep, wherever you are in India.</p>
+            <div class="shipping-features">
+                <div class="ship-feature">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                    Pan-India Shipping
+                </div>
+                <div class="ship-feature">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    Secure Packaging
+                </div>
+                <div class="ship-feature">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    Technical Support Included
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- CONTACT -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <section class="section contact" id="contact">
+        <div class="reveal" style="text-align:center;">
+            <div class="section-label">Get in Touch</div>
+            <h2 class="section-title">Ready to Order?</h2>
+            <p class="section-subtitle" style="margin: 0 auto;">Drop us a message or reach out directly — we'll get back to you promptly.</p>
+        </div>
+        <div class="contact-layout">
+            <!-- ── INQUIRY FORM ── -->
+            <div class="inquiry-card reveal">
+                <h3>Send Us an Inquiry</h3>
+                <p>Interested in the CULTI 7? Fill in your details and we'll reach out with pricing and availability.</p>
+
+                <div id="inquiryForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Name <span class="required">*</span></label>
+                            <input type="text" class="form-input" id="formName" placeholder="Your full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number <span class="required">*</span></label>
+                            <input type="tel" class="form-input" id="formPhone" placeholder="+91 XXXXX XXXXX" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" class="form-input" id="formEmail" placeholder="your@email.com">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Interested Model <span class="required">*</span></label>
+                            <select class="form-select" id="formModel">
+                                <option value="" disabled selected>Select a model</option>
+                                <option value="RCN">CULTI 7 RCN</option>
+                                <option value="NW">CULTI 7 NW</option>
+                                <option value="NW+RCN">CULTI 7 NW+RCN (Combo)</option>
+                                <option value="unsure">Not sure yet</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Quantity</label>
+                            <select class="form-select" id="formQty">
+                                <option value="1" selected>1 unit</option>
+                                <option value="2-5">2 – 5 units</option>
+                                <option value="5-10">5 – 10 units</option>
+                                <option value="10+">10+ units (bulk)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Location / City</label>
+                        <input type="text" class="form-input" id="formCity" placeholder="e.g. Mangalore, Karnataka">
+                    </div>
+                    <div class="form-group">
+                        <label>Message (optional)</label>
+                        <textarea class="form-textarea" id="formMessage" placeholder="Tell us about your requirements, questions, or anything else..."></textarea>
+                    </div>
+                    <button class="form-submit" onclick="submitInquiry()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                        Send Inquiry
+                    </button>
+                </div>
+
+                <!-- Success state -->
+                <div class="form-success" id="formSuccess">
+                    <div class="form-success-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    </div>
+                    <h4>Inquiry Sent!</h4>
+                    <p>Thank you for your interest in the CULTI 7. Our team will get back to you within 24 hours. You can also reach us directly via phone or WhatsApp.</p>
+                </div>
+            </div>
+
+            <!-- ── CONTACT INFO ── -->
+            <div class="contact-info-card reveal">
+                <div class="contact-info-box">
+                    <h4>Reach Us Directly</h4>
+
+                    <a href="tel:+916360261964" class="contact-method">
+                        <div class="contact-method-icon phone">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        </div>
+                        <div class="contact-method-text">
+                            <div class="cm-label">Call Us</div>
+                            <div class="cm-value">+91 63602 61964</div>
+                        </div>
+                    </a>
+
+                    <a href="https://wa.me/916360261964?text=Hi%2C%20I%27m%20interested%20in%20the%20CULTI%207%20Moisture%20Meter.%20Please%20share%20details." target="_blank" class="contact-method">
+                        <div class="contact-method-icon whatsapp">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        </div>
+                        <div class="contact-method-text">
+                            <div class="cm-label">WhatsApp</div>
+                            <div class="cm-value">+91 63602 61964</div>
+                        </div>
+                    </a>
+
+                    <a href="mailto:contact@ixetronics.com" class="contact-method">
+                        <div class="contact-method-icon email">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        </div>
+                        <div class="contact-method-text">
+                            <div class="cm-label">Email</div>
+                            <div class="cm-value">contact@ixetronics.com</div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="quick-info">
+                    <h4>Quick Info</h4>
+                    <div class="quick-info-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        Response within 24 hours
+                    </div>
+                    <div class="quick-info-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                        Ships anywhere in India
+                    </div>
+                    <div class="quick-info-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        Bulk order discounts available
+                    </div>
+                    <div class="quick-info-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                        Technical support & calibration help
+                    </div>
+                    <div class="quick-info-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        Trusted since 2021
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">CULTI <span>7</span></div>
+            <ul class="footer-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#use-cases">Usage</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#models">Models</a></li>
+                <li><a href="#specs">Specs</a></li>
+                <li><a href="#customers">Customers</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="footer-copy">
+                A product of <strong style="color:rgba(255,255,255,0.7)">IXE Tronics</strong>, Mangalore &nbsp;·&nbsp; Marketed by <strong style="color:rgba(255,255,255,0.7)">Subraya</strong><br>
+                &copy; 2025 IXE Tronics. All rights reserved. &nbsp;·&nbsp; Trusted since 2021.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // Mobile nav
+        const hamburger = document.getElementById('hamburger');
+        const mobileNav = document.getElementById('mobileNav');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+
+        hamburger.addEventListener('click', () => {
+            mobileNav.classList.toggle('open');
+            mobileOverlay.classList.toggle('open');
+        });
+
+        mobileOverlay.addEventListener('click', closeMobileNav);
+
+        function closeMobileNav() {
+            mobileNav.classList.remove('open');
+            mobileOverlay.classList.remove('open');
+        }
+
+        // Scroll reveal
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Video placeholder — replace YOUR_VIDEO_ID with actual YouTube ID
+        function loadVideo(el) {
+            const wrapper = el.parentElement;
+            const videoId = 'YOUR_VIDEO_ID';
+            if (videoId === 'YOUR_VIDEO_ID') {
+                alert('To embed your video:\n\n1. Upload your demo video to YouTube\n2. Copy the video ID from the URL\n3. Replace YOUR_VIDEO_ID in the HTML/JS code');
+                return;
+            }
+            wrapper.innerHTML = '<iframe src="https://www.youtube.com/embed/' + videoId + '?autoplay=1" title="CULTI 7 Demo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+        }
+
+        // ═══ INQUIRY FORM HANDLER ═══
+        function submitInquiry() {
+            const name = document.getElementById('formName').value.trim();
+            const phone = document.getElementById('formPhone').value.trim();
+            const email = document.getElementById('formEmail').value.trim();
+            const model = document.getElementById('formModel').value;
+            const qty = document.getElementById('formQty').value;
+            const city = document.getElementById('formCity').value.trim();
+            const message = document.getElementById('formMessage').value.trim();
+
+            // Basic validation
+            if (!name) { highlightField('formName'); return; }
+            if (!phone) { highlightField('formPhone'); return; }
+            if (!model) { highlightField('formModel'); return; }
+
+            // Build mailto body as fallback (works without backend)
+            const subject = encodeURIComponent('CULTI 7 Inquiry — ' + model + ' — ' + name);
+            const body = encodeURIComponent(
+                'New inquiry from CULTI 7 website\n' +
+                '================================\n\n' +
+                'Name: ' + name + '\n' +
+                'Phone: ' + phone + '\n' +
+                'Email: ' + (email || 'Not provided') + '\n' +
+                'Model: CULTI 7 ' + model + '\n' +
+                'Quantity: ' + qty + '\n' +
+                'Location: ' + (city || 'Not provided') + '\n' +
+                'Message: ' + (message || 'None') + '\n'
+            );
+
+            // Option 1: Open email client with pre-filled details
+            window.location.href = 'mailto:contact@ixetronics.com?subject=' + subject + '&body=' + body;
+
+            // Show success state
+            document.getElementById('inquiryForm').style.display = 'none';
+            document.getElementById('formSuccess').classList.add('show');
+
+            // ═══ OPTION 2: If you set up a backend (e.g., Formspree, Google Forms, etc.) ═══
+            // Replace the mailto above with a fetch() call to your form endpoint:
+            //
+            // fetch('https://formspree.io/f/YOUR_FORM_ID', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify({ name, phone, email, model, qty, city, message })
+            // }).then(res => {
+            //     if (res.ok) {
+            //         document.getElementById('inquiryForm').style.display = 'none';
+            //         document.getElementById('formSuccess').classList.add('show');
+            //     }
+            // });
+        }
+
+        function highlightField(id) {
+            const el = document.getElementById(id);
+            el.style.borderColor = '#C45B4A';
+            el.style.boxShadow = '0 0 0 3px rgba(196,91,74,0.15)';
+            el.focus();
+            el.addEventListener('input', function handler() {
+                el.style.borderColor = '';
+                el.style.boxShadow = '';
+                el.removeEventListener('input', handler);
+            });
+        }
+    </script>
+</body>
+</html>
