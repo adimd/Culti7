@@ -1551,6 +1551,24 @@
             .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
             .customers-grid { grid-template-columns: 1fr; }
         }
+
+        /* Form: desktop shows iframe, mobile shows button */
+.form-mobile-btn-wrap { display: none; }
+
+@media (max-width: 768px) {
+    .form-iframe-wrap { display: none; }
+    .form-mobile-btn-wrap { display: block; }
+}
+
+body { overflow-x: hidden; }
+.section { overflow-x: hidden; }
+
+@media (max-width: 768px) {
+    .customers-grid {
+        grid-template-columns: 1fr !important;
+        max-width: 100% !important;
+    }
+}
     </style>
 </head>
 <body>
@@ -2099,11 +2117,27 @@
         <div class="inquiry-card reveal">
             <h3>Send Us an Inquiry</h3>
             <p>Interested in the CULTI 7? Fill in your details and we'll reach out with pricing and availability.</p>
-            <iframe 
-                src="https://docs.google.com/forms/d/e/1FAIpQLSewlnQnrQstxFhtdCo5WmTYUd99bVqKBgAu9D6iTEUAX29bNQ/viewform?usp=header" 
-                style="width:100%; height:500px; border:none; border-radius:12px;"
-                title="CULTI 7 Inquiry Form">
-            </iframe>
+            
+            <!-- Desktop: show iframe -->
+            <div class="form-iframe-wrap">
+                <iframe 
+                    src="https://docs.google.com/forms/d/e/1FAIpQLSewlnQnrQstxFhtdCo5WmTYUd99bVqKBgAu9D6iTEUAX29bNQ/viewform?embedded=true" 
+                    style="width:100%; height:900px; border:none; border-radius:12px;"
+                    title="CULTI 7 Inquiry Form">
+                </iframe>
+            </div>
+
+            <!-- Mobile: show button instead -->
+            <div class="form-mobile-btn-wrap">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSewlnQnrQstxFhtdCo5WmTYUd99bVqKBgAu9D6iTEUAX29bNQ/viewform" 
+                   target="_blank" 
+                   class="btn-primary" 
+                   style="width:100%; justify-content:center;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                    Open Inquiry Form
+                </a>
+                <p style="font-size:0.8rem; color:var(--clr-warm-gray); margin-top:0.8rem; text-align:center;">Opens in a new tab for the best experience on mobile.</p>
+            </div>
         </div>
 
         <!-- ── CONTACT INFO ── -->
@@ -2168,7 +2202,6 @@
         </div>
     </div>
 </section>
-
     <!-- FOOTER -->
     <footer class="footer">
         <div class="footer-content">
